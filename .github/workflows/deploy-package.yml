@@ -80,13 +80,10 @@ jobs:
       - name: Build package
         run: yarn build
 
-      - name: Echo version number
-        run: echo "${{ needs.env-vars.outputs.release }}"
-
       - name: Upload release artifact
         uses: actions/upload-artifact@v3
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-release'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-${{ needs.env-vars.outputs.release }}'
           path: |
             dist
             package.json
@@ -94,13 +91,13 @@ jobs:
 
   package:
     name: Publish package
-    needs: build
+    needs: [env-vars, build]
     runs-on: ubuntu-latest
     steps:
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-release'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-${{ needs.env-vars.outputs.release }}'
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -113,6 +110,8 @@ jobs:
       - name: Enable Yarn Berry
         run: yarn set version stable
 
+      - name: Echo version number
+        run: echo "${{ needs.env-vars.outputs.release }}"
       - name: Allow private package registry access
         id: allow-private-package-registry-access
         run: |
