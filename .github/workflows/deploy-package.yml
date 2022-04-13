@@ -19,12 +19,6 @@ jobs:
           VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
           echo "::set-output name=version::$VERSION"
 
-  install:
-    name: Install package dependencies
-    needs: env-vars
-    runs-on: ubuntu-latest
-    steps:
-
   test:
     name: Run tests
     needs: install
