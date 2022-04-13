@@ -45,10 +45,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-install'
-          path: .
+          path: |
+            .
+            !.yarn
 
   test:
-    name: Build and test package
+    name: Run tests
     needs: install
     runs-on: ubuntu-latest
     steps:
@@ -64,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: code-coverage-report
-          path: output/test/code-coverage.html
+          path: coverage
 
   build:
     name: Build package
