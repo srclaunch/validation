@@ -19,8 +19,8 @@ jobs:
           VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
           echo "::set-output name=version::$VERSION"
 
-  build:
-    name: Build and test package
+  install:
+    name: Install package dependencies
     needs: env-vars
     runs-on: ubuntu-latest
     steps:
@@ -32,16 +32,6 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: Allow private package registry access
-        id: allow-private-package-registry-access
-        run: |
-          echo "nodeLinker: node-modules" > ./.yarnrc.yml
-          echo "npmScopes:" >> ./.yarnrc.yml
-          echo "  ${{ github.event.repository.owner.login }}:" >> ./.yarnrc.yml
-          echo "    npmRegistryServer: https://registry.npmjs.org" >> ./.yarnrc.yml
-          echo "    npmAlwaysAuth: true" >> ./.yarnrc.yml
-          echo "    npmAuthToken: ${{ secrets.NPM_ACCESS_TOKEN }}" >> ./.yarnrc.yml
-
       - name: Enable corepack
         run: corepack enable
 
@@ -51,14 +41,24 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build package
-        run: yarn build
+      - name: Upload install artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-install'
+          path: .
+
+  test:
+    name: Build and test package
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-install'
 
       - name: Run tests and collect testing coverage
         run: yarn test:coverage
-
-      - name: Echo version number
-        run: echo "${{ needs.env-vars.outputs.release }}"
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
@@ -66,21 +66,37 @@ jobs:
           name: code-coverage-report
           path: output/test/code-coverage.html
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}'
-          path: dist
-
-  package:
-    name: Publish package
-    needs: [env-vars, build]
+  build:
+    name: Build package
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-install'
+
+      - name: Build package
+        run: yarn build
+
+      - name: Echo version number
+        run: echo "${{ needs.env-vars.outputs.release }}"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-build'
+          path: dist
+
+  package:
+    name: Publish package
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-build'
 
       - name: Allow private package registry access
         id: allow-private-package-registry-access
