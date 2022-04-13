@@ -71,13 +71,9 @@ jobs:
           name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}'
           path: dist
 
-  test:
-    runs-on: ubuntu-latest
-    steps:
-
   package:
     name: Publish package
-    needs: tests
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download a single artifact
