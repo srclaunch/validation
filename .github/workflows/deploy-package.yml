@@ -5,10 +5,26 @@ on:
     branches:
       - main
 jobs:
-  package:
+  env-vars:
+    name: Initialize environment variables
+    runs-on: ubuntu-latest
+    outputs:
+      release: ${{ steps.get-release.outputs.version }}
+    steps:
+      - name: Get release version
+        id: get-release
+        run: |
+          KEYWORD="chore(release): "
+          ESCAPED_KEYWORD=$(printf '%s\n' "$KEYWORD" | sed -e 's/[]\/$*.^[]/\\&/g')
+          VERSION=$(sed "s/$ESCAPED_KEYWORD//g" <(echo "${{ steps.get-commit.outputs.message }}"))
+          echo "::set-output name=version::$VERSION"
+
+  build:
+    name: Build and test package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
@@ -37,16 +53,46 @@ jobs:
       - name: Build package
         run: yarn build
 
+      - name: Run tests and collect testing coverage
+        run: yarn test:coverage
+
+      - name: Echo version number
+        run: echo "${{ needs.env-vars.outputs.release }}"
+
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: output/test/code-coverage.html
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}'
           path: dist
 
-      - name: Run tests
-        id: tests
-        run: yarn test
+  test:
+    runs-on: ubuntu-latest
+    steps:
 
-      - name: Publish package to NPM
-        needs: tests
+  package:
+    name: Publish package
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}'
+
+      - name: Allow private package registry access
+        id: allow-private-package-registry-access
+        run: |
+          echo "nodeLinker: node-modules" > ./.yarnrc.yml
+          echo "npmScopes:" >> ./.yarnrc.yml
+          echo "  ${{ github.event.repository.owner.login }}:" >> ./.yarnrc.yml
+          echo "    npmRegistryServer: https://registry.npmjs.org" >> ./.yarnrc.yml
+          echo "    npmAlwaysAuth: true" >> ./.yarnrc.yml
+          echo "    npmAuthToken: ${{ secrets.NPM_ACCESS_TOKEN }}" >> ./.yarnrc.yml
+
         run: yarn npm publish
