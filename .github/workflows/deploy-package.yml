@@ -82,11 +82,13 @@ jobs:
       - name: Echo version number
         run: echo "${{ needs.env-vars.outputs.release }}"
 
-      - name: Upload build artifact
+      - name: Upload release artifact
         uses: actions/upload-artifact@v3
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-build'
-          path: dist
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-release'
+          path: |
+            dist
+            package.json
 
   package:
     name: Publish package
@@ -96,7 +98,7 @@ jobs:
       - name: Download a single artifact
         uses: actions/download-artifact@v2
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-build'
+          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-release'
 
       - name: Allow private package registry access
         id: allow-private-package-registry-access
