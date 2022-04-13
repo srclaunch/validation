@@ -122,5 +122,8 @@ jobs:
           echo "    npmAlwaysAuth: true" >> ./.yarnrc.yml
           echo "    npmAuthToken: ${{ secrets.NPM_ACCESS_TOKEN }}" >> ./.yarnrc.yml
 
+      - name: Install dependencies
+        run: yarn install
+
       - name: Publish to NPM
         run: yarn npm publish
