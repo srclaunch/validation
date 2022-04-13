@@ -3,7 +3,7 @@
   "description": "Form/value/etc validation library used in AppLab applications and services",
   "author": "Steven Bennett <steven@srclaunch.com>",
   "license": "MIT",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "engines": {
     "node": ">=16"
   },
