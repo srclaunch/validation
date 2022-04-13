@@ -4,13 +4,12 @@ import { Condition, ValidationProblem } from '@srclaunch/types';
 import emailValidator from 'email-validator';
 import passwordValidator from 'password-validator';
 
-
 export function validate(
   value: unknown,
   props: {
-    [key in Condition]?: boolean | string | number;
+    readonly [key in Condition]?: boolean | string | number;
   },
-): ValidationProblem[] {
+): readonly ValidationProblem[] {
   // const logger = new Logger();
   // const getLengthArg = (value: number | boolean | string[]) => {
   //   return typeof value === 'boolean' && value === true
@@ -232,7 +231,10 @@ export function validate(
             );
           }
 
-          if (typeof value !== 'string' || value.length !== conditionValue) {
+          if (
+            (typeof value === 'string' || typeof value === 'number') &&
+            value.toString().length !== conditionValue
+          ) {
             return createValidationProblem(conditionName, {
               requirement: conditionValue,
             });
@@ -276,8 +278,6 @@ export function validate(
 
           break;
       }
-
-      return undefined;
     })
     .filter(prop => {
       if (!prop) return false;
@@ -422,12 +422,12 @@ export function validate(
 export function getValidationProblemLabel(
   condition: Condition,
   context?: {
-    subject?: string;
-    requirement?: string | number | boolean;
+    readonly subject?: string;
+    readonly requirement?: string | number | boolean;
   },
 ): {
-  short: string;
-  long: string;
+  readonly short: string;
+  readonly long: string;
 } {
   switch (condition) {
     case Condition.Contains:
