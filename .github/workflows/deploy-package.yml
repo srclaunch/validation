@@ -9,8 +9,14 @@ jobs:
     name: Initialize environment variables
     runs-on: ubuntu-latest
     outputs:
+      commit-message: ${{ steps.get-commit.outputs.message }}
       release: ${{ steps.get-release.outputs.version }}
     steps:
+      - name: Get commit
+        id: get-commit
+        run: |
+          echo "::set-output name=message::${{ format(github.event.head_commit.message, 'chore(release): ', '') }}"
+
       - name: Get release version
         id: get-release
         run: |
