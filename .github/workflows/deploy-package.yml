@@ -24,6 +24,12 @@ jobs:
     needs: env-vars
     runs-on: ubuntu-latest
     steps:
+
+  test:
+    name: Run tests
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -41,24 +47,6 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Upload install artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-install'
-          path: |
-            .
-            !.yarn
-
-  test:
-    name: Run tests
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download a single artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-install'
-
       - name: Run tests and collect testing coverage
         run: yarn test:coverage
 
@@ -73,10 +61,22 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Download a single artifact
-        uses: actions/download-artifact@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
         with:
-          name: '${{ github.event.repository.owner.login }}-${{ github.event.repository.name }}-${{ github.ref_name }}-install'
+          node-version: '16.x'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Enable Yarn Berry
+        run: yarn set version stable
+
+      - name: Install dependencies
+        run: yarn install
 
       - name: Build package
         run: yarn build
