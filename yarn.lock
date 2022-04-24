@@ -875,9 +875,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/cli@npm:^0.1.269":
-  version: 0.1.269
-  resolution: "@srclaunch/cli@npm:0.1.269"
+"@srclaunch/cli@npm:^0.1.270":
+  version: 0.1.270
+  resolution: "@srclaunch/cli@npm:0.1.270"
   dependencies:
     "@rauschma/stringio": ^1.4.0
     "@srclaunch/exceptions": ^0.1.48
@@ -906,9 +906,11 @@ __metadata:
     typescript: ^4.6.3
     update-notifier: ^5.1.0
     vite: ^2.9.5
+  peerDependencies:
+    ansi-styles: "*"
   bin:
     srclaunch: dist/index.mjs
-  checksum: f952ec8c3411a63180ee0ca3151a00e5f99d3fc9226309e756a4aa211660565b97d202a196be905035b1db6aad5b98376d33f626760fd891f3c7cbb89edf4e54
+  checksum: 32c36c249811df0fe5f918bfd0fe9f6a4435eb8f19b481133fd1e572e66a46bad20ace282f26d73d8b4cf8f001869c29edceae8771178de32940436eaeccd3f5
   languageName: node
   linkType: hard
 
@@ -919,7 +921,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/exceptions@npm:^0.1.48, @srclaunch/exceptions@npm:^0.1.51":
+"@srclaunch/exceptions@npm:^0.1.48":
   version: 0.1.51
   resolution: "@srclaunch/exceptions@npm:0.1.51"
   dependencies:
@@ -928,6 +930,18 @@ __metadata:
     nanoid: ^3.3.3
     serialize-error: ^10.0.0
   checksum: 4799092f2764c1dd6e5871358112f513f7980f1dc3d7f3e769766eb237427cbe79c91492ebdb65c30c953f32e4c9218b24bff36b15dc2f005001cf141d572bef
+  languageName: node
+  linkType: hard
+
+"@srclaunch/exceptions@npm:^0.1.53":
+  version: 0.1.53
+  resolution: "@srclaunch/exceptions@npm:0.1.53"
+  dependencies:
+    "@srclaunch/logger": ^0.1.64
+    luxon: ^2.3.2
+    nanoid: ^3.3.3
+    serialize-error: ^10.0.0
+  checksum: ad6aef8f7d79da329b09072fb357dc547fd7c08c35ec060fec1a1f85f243133d8be60a6e2f8129fbf6ef11f2615cf53ddc8f34a0cc1228ffe5c29ac8c048d3f5
   languageName: node
   linkType: hard
 
@@ -942,6 +956,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@srclaunch/logger@npm:^0.1.64":
+  version: 0.1.64
+  resolution: "@srclaunch/logger@npm:0.1.64"
+  dependencies:
+    chalk: ^5.0.1
+    luxon: ^2.3.2
+    nanoid: ^3.3.3
+  checksum: b624edcd47dff150dcfa5fb507cd03e7f26c6fec3a5b37dfc7e2a3049266359ff389671801e7604e1ff67260053c6179908222d5733d075d9928f55a9d7a0b8e
+  languageName: node
+  linkType: hard
+
 "@srclaunch/types@npm:^0.1.97":
   version: 0.1.97
   resolution: "@srclaunch/types@npm:0.1.97"
@@ -953,9 +978,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@srclaunch/validation@workspace:."
   dependencies:
-    "@srclaunch/cli": ^0.1.269
+    "@srclaunch/cli": ^0.1.270
     "@srclaunch/dx": ^0.1.43
-    "@srclaunch/exceptions": ^0.1.51
+    "@srclaunch/exceptions": ^0.1.53
     "@srclaunch/types": ^0.1.97
     "@types/node": ^17.0.25
     "@typescript-eslint/eslint-plugin": ^5.20.0

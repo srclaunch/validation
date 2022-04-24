@@ -1,5 +1,2 @@
-import { validate } from './lib/validation/index';
-export { validate };
-
-import { objectHasProperty } from './lib/validation/object';
-export { objectHasProperty };
+export { validate } from './lib/validation/index.js';
+export { objectHasProperty } from './lib/validation/object.js';
