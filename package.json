@@ -12,30 +12,26 @@
     "registry": "https://registry.npmjs.org/"
   },
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "package.json",
     "dist"
   ],
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.umd.js"
     }
   },
   "scripts": {
-    "build": "yarn clean && yarn build:applab",
-    "build:applab": "applab build",
-    "clean": "rm -fr ./dist",
-    "git:push": "git push --follow-tags origin main",
-    "qr": "yarn build && git add . && git commit -m \"Quick release - patch\" && yarn release",
-    "release": "yarn test && yarn version:patch && yarn git:push",
-    "test": "ava",
-    "test:coverage": "yarn c8 ava",
-    "test:watch": "yarn ava --watch",
-    "version:patch": "standard-version",
+    "build": "yarn srclaunch build",
+    "qr": "yarn build && yarn srclaunch changesets add --message \"Quick release - patch\" && yarn srclaunch release",
+    "release": "yarn test:coverage && yarn srclaunch release",
+    "test": "yarn srclaunch test",
+    "test:watch": "yarn srclaunch test --watch",
+    "test:coverage": "yarn srclaunch test --coverage",
     "yui": "yarn upgrade-interactive"
   },
   "devDependencies": {
@@ -79,5 +75,14 @@
     "js-file-download": "^0.4.12",
     "password-validator": "^5.2.1",
     "zxcvbn": "^4.4.2"
+  },
+  "ava": {
+    "extensions": {
+      "js": true,
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=ts-node/esm"
+    ]
   }
 }
