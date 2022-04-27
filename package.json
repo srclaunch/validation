@@ -35,7 +35,7 @@
     "yui": "yarn upgrade-interactive"
   },
   "devDependencies": {
-    "@srclaunch/cli": "^0.1.302",
+    "@srclaunch/cli": "^0.1.307",
     "@srclaunch/dx": "^0.1.44",
     "@srclaunch/types": "^0.1.99",
     "@types/node": "^17.0.29",
@@ -71,7 +71,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@srclaunch/exceptions": "^0.1.54",
+    "@srclaunch/exceptions": "^0.1.58",
     "email-validator": "^2.0.4",
     "js-file-download": "^0.4.12",
     "password-validator": "^5.2.1",

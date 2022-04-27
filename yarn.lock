@@ -875,9 +875,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@srclaunch/cli@npm:^0.1.302":
-  version: 0.1.302
-  resolution: "@srclaunch/cli@npm:0.1.302"
+"@srclaunch/cli@npm:^0.1.307":
+  version: 0.1.307
+  resolution: "@srclaunch/cli@npm:0.1.307"
   dependencies:
     "@rauschma/stringio": ^1.4.0
     "@srclaunch/exceptions": ^0.1.54
@@ -912,7 +912,7 @@ __metadata:
     ansi-styles: "*"
   bin:
     srclaunch: dist/index.mjs
-  checksum: 08cd838effe4c1b8d843a0196827f9b7494b2eb6abb8785960058bd17c11514362008e5d1de0ee07960ba1e164e982a9cd96a43dad4af7bdad6e500fbedfd243
+  checksum: f79e50242b9f5fc7a4da51f08dd426d74e4ade900b191679fced1a376b5a021fec9e91e3b01d7f75eb52db79d93863c9fa2f16481a44c83a748e609195864011
   languageName: node
   linkType: hard
 
@@ -935,6 +935,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@srclaunch/exceptions@npm:^0.1.58":
+  version: 0.1.58
+  resolution: "@srclaunch/exceptions@npm:0.1.58"
+  dependencies:
+    "@srclaunch/logger": ^0.1.73
+    luxon: ^2.3.2
+    nanoid: ^3.3.3
+    serialize-error: ^10.0.0
+  checksum: f35be2a9b11abfbb1d88349d2b2590de21ae73031d9606bfc6a52b998ccb2905542192af7413d60a9a0bf6dcb9cf8c91e2d07750ef6ecc50df4d0b0630ad04ec
+  languageName: node
+  linkType: hard
+
 "@srclaunch/logger@npm:^0.1.66":
   version: 0.1.66
   resolution: "@srclaunch/logger@npm:0.1.66"
@@ -943,6 +955,17 @@ __metadata:
     luxon: ^2.3.2
     nanoid: ^3.3.3
   checksum: b29ee2605a87dceb3931373c59f836de9437632aafe363e68be46fb04be8ec8b30867d047472f1cbe16677d62cf8cfe69d3527b7bfa3b390a81bc1685611bf8c
+  languageName: node
+  linkType: hard
+
+"@srclaunch/logger@npm:^0.1.73":
+  version: 0.1.73
+  resolution: "@srclaunch/logger@npm:0.1.73"
+  dependencies:
+    luxon: ^2.3.2
+    nanoid: ^3.3.3
+    picocolors: ^1.0.0
+  checksum: 0a5b807cd2ffcaac342d76d2077155854a9291e0c824b2adf9f5cd048178da4ab8f03abe08ac0b1a9b43c69e553e520ee11794d9bbfb56bd0732338030d82317
   languageName: node
   linkType: hard
 
@@ -957,9 +980,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@srclaunch/validation@workspace:."
   dependencies:
-    "@srclaunch/cli": ^0.1.302
+    "@srclaunch/cli": ^0.1.307
     "@srclaunch/dx": ^0.1.44
-    "@srclaunch/exceptions": ^0.1.54
+    "@srclaunch/exceptions": ^0.1.58
     "@srclaunch/types": ^0.1.99
     "@types/node": ^17.0.29
     "@typescript-eslint/eslint-plugin": ^5.21.0
