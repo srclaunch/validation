@@ -5,6 +5,7 @@ import {
   BuildTool,
   ProjectType,
   TestReporter,
+  TestTool,
 } from '@srclaunch/types';
 
 export default {
@@ -25,9 +26,6 @@ export default {
     coverage: {
       reporters: [TestReporter.Lcov, TestReporter.JSONSummary],
     },
-    files: {
-      include: ['src/**/*.test.ts'],
-    },
-    verbose: true,
+    tool: TestTool.Ava,
   },
 };
