@@ -14,9 +14,6 @@ export default {
     'Form/value/etc validation library used in AppLab applications and services',
   type: ProjectType.Library,
   build: {
-    bundle: {
-      exclude: ['@srclaunch/exceptions'],
-    },
     formats: [BuildFormat.ESM, BuildFormat.UMD],
     platform: BuildPlatform.Node,
     target: BuildTarget.ESNext,
